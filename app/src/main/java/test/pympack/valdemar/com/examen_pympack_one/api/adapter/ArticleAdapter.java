@@ -29,9 +29,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
     public ArticleAdapter(Context context) {
         mData = new ArrayList<>();
         this.context = context;
-
     }
-
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -43,7 +41,6 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
     public void onBindViewHolder(ViewHolder holder, int position) {
         Article article = mData.get(position);
         holder.mTitle.setText(article.getTitle());
-
         Glide.with(context).load(article.getUrlToImage()).into(holder.mImage);
     }
 
