@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Examen_Pympack_One</string>
+    <string name="t_tulo">Título</string>
 </resources>

@@ -2,7 +2,10 @@ package test.pympack.valdemar.com.examen_pympack_one;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -16,6 +19,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import test.pympack.valdemar.com.examen_pympack_one.api.adapter.ArticleAdapter;
 import test.pympack.valdemar.com.examen_pympack_one.api.model.Article;
 import test.pympack.valdemar.com.examen_pympack_one.api.model.ArticleResponse;
 import test.pympack.valdemar.com.examen_pympack_one.api.network.RetrofitInstance;
@@ -29,13 +33,29 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.text_welcome_cus)
     TextView mText_welcome_cus;
 
+    @BindView(R.id.recycler)
+    RecyclerView mRecyclerView;
+
+    ArticleAdapter mArticleAdapter;
+
+    private RecyclerView.LayoutManager mLayoutManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
-       // changeTextFlavor();
+        changeTextFlavor();
+
+
+        mRecyclerView.hasFixedSize();
+
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mArticleAdapter = new ArticleAdapter(getApplicationContext());
+
+        mRecyclerView.setAdapter(mArticleAdapter);
 
 /*
         mRetrofit = new Retrofit.Builder()
@@ -58,14 +78,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ArticleResponse> call, Response<ArticleResponse> response) {
                 ArticleResponse listaArticle = response.body();
-                ArrayList<Article> article = listaArticle.getArticles();
+                ArrayList<Article> articlelista = listaArticle.getArticles();
 
-                for (int i = 0; i<article.size();i++){
-                    Article articleList = article.get(i);
+                for (int i = 0; i<articlelista.size();i++){
+                    Article articleList = articlelista.get(i);
                     Log.v(Contanst.TAG_LOG,"\n"+articleList.getTitle());
                     Log.v(Contanst.TAG_LOG,"\n"+articleList.getUrlToImage());
 
                 }
+
+
+                mArticleAdapter.passDataAdapter(articlelista);
 
             }
 
