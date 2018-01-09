@@ -32,7 +32,7 @@ public class DownloadTask extends AsyncTask<String, Integer, String> {
 
     public DownloadTask(Context context){
         progressDialog = new ProgressDialog(context);
-        //this.context = context;
+        this.context = context;
     }
 
     /**
