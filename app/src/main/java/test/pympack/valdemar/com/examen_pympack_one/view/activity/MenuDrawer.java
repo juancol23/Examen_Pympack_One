@@ -16,7 +16,9 @@ import android.view.MenuItem;
 
 import test.pympack.valdemar.com.examen_pympack_one.OnDataPass;
 import test.pympack.valdemar.com.examen_pympack_one.R;
+import test.pympack.valdemar.com.examen_pympack_one.api.down.DownloadTask;
 import test.pympack.valdemar.com.examen_pympack_one.view.fragment.BrindgData;
+import test.pympack.valdemar.com.examen_pympack_one.view.fragment.DownloadFragment;
 import test.pympack.valdemar.com.examen_pympack_one.view.fragment.FragmentoInicio;
 import test.pympack.valdemar.com.examen_pympack_one.view.fragment.MusicPlayer;
 
@@ -103,6 +105,11 @@ public class MenuDrawer extends AppCompatActivity
                     .addToBackStack(null).commit();
 
         } else if (id == R.id.nav_manage) {
+            setToolbar("Download");
+            DownloadFragment downloadTask = new DownloadFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.contenido_dinamico, downloadTask)
+                    .setTransition(FragmentTransaction.TRANSIT_ENTER_MASK)
+                    .addToBackStack(null).commit();
 
         } else if (id == R.id.nav_share) {
 
