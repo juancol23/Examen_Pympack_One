@@ -1,10 +1,12 @@
 package test.pympack.valdemar.com.examen_pympack_one;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -14,6 +16,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -25,10 +28,10 @@ import test.pympack.valdemar.com.examen_pympack_one.api.model.ArticleResponse;
 import test.pympack.valdemar.com.examen_pympack_one.api.network.RetrofitInstance;
 import test.pympack.valdemar.com.examen_pympack_one.api.service.ServiceApiNew;
 import test.pympack.valdemar.com.examen_pympack_one.api.util.Contanst;
+import test.pympack.valdemar.com.examen_pympack_one.view.activity.MenuDrawer;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
-    private Retrofit mRetrofit;
 
     @BindView(R.id.text_welcome_cus)
     TextView mText_welcome_cus;
@@ -36,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.recycler)
     RecyclerView mRecyclerView;
 
-    ArticleAdapter mArticleAdapter;
+    private ArticleAdapter mArticleAdapter;
 
     private RecyclerView.LayoutManager mLayoutManager;
 
@@ -46,34 +49,35 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
-        changeTextFlavor();
 
+        //changeTextFlavor();
 
         mRecyclerView.hasFixedSize();
-
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mArticleAdapter = new ArticleAdapter(getApplicationContext());
-
         mRecyclerView.setAdapter(mArticleAdapter);
 
-/*
-        mRetrofit = new Retrofit.Builder()
-                .baseUrl(Contanst.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-*/
         obtenerData();
+
+
+        TextView t = findViewById(R.id.text_welcome_cus);
+        t.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), MenuDrawer.class);
+                Log.v(Contanst.TAG_LOG,"Click");
+                startActivity(i);
+            }
+        });
+
 
    }
 
     private void obtenerData() {
-       // ServiceApiNew service = mRetrofit.create(ServiceApiNew.class);
 
         ServiceApiNew service = RetrofitInstance.getRetrofitInstance().create(ServiceApiNew.class);
-
         Call<ArticleResponse> articleResponseCall = service.obtenerListaAnunciosApi();
-
         articleResponseCall.enqueue(new Callback<ArticleResponse>() {
             @Override
             public void onResponse(Call<ArticleResponse> call, Response<ArticleResponse> response) {
@@ -84,12 +88,9 @@ public class MainActivity extends AppCompatActivity {
                     Article articleList = articlelista.get(i);
                     Log.v(Contanst.TAG_LOG,"\n"+articleList.getTitle());
                     Log.v(Contanst.TAG_LOG,"\n"+articleList.getUrlToImage());
-
                 }
 
-
                 mArticleAdapter.passDataAdapter(articlelista);
-
             }
 
             @Override
@@ -104,8 +105,19 @@ public class MainActivity extends AppCompatActivity {
            mText_welcome_cus.setText("FREE HEY FREE");
        }else {
            mText_welcome_cus.setText("PAGO PUTA PAGO");
-
        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.recycler:
+                Intent i = new Intent(this, MenuDrawer.class);
+                startActivity(i);
+                Log.v(Contanst.TAG_LOG,"Click");
+                break;
+        }
+
     }
 
 
